@@ -5,7 +5,7 @@ import trytond.tests.test_tryton
 from trytond.tests.test_tryton import ModuleTestCase
 
 
-class AccountFRTestCase(ModuleTestCase):
+class AccountNLTestCase(ModuleTestCase):
     'Test Account NL module'
     module = 'account_nl'
 
@@ -13,5 +13,5 @@ class AccountFRTestCase(ModuleTestCase):
 def suite():
     suite = trytond.tests.test_tryton.suite()
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
-        AccountFRTestCase))
+        AccountNLTestCase))
     return suite
