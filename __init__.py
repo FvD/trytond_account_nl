@@ -11,7 +11,7 @@ def register():
         TaxRuleTemplate,
         AccountFrFECStart,
         AccountFrFECResult,
-        module='account_fr', type_='model')
+        module='account_nl', type_='model')
     Pool.register(
         AccountFrFEC,
-        module='account_fr', type_='wizard')
+        module='account_nl', type_='wizard')
