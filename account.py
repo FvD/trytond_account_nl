@@ -10,6 +10,9 @@ from trytond.transaction import Transaction
 from trytond.wizard import Wizard, StateView, StateTransition, Button
 from trytond.model import ModelView, fields
 
+# FEC stands for Foreign Earned Income. This has been copied from the fr files
+# and still needs testing. There is a FEC concept in Dutch tax law, but this 
+# has not been looked into yet.
 
 __all__ = ['TaxTemplate', 'TaxRuleTemplate',
     'AccountFrFEC', 'AccountFrFECStart', 'AccountFrFECResult']
@@ -78,15 +81,15 @@ class TaxRuleTemplate:
 
 class AccountFrFEC(Wizard):
     'Generate FEC'
-    __name__ = 'account.fr.fec'
+    __name__ = 'account.nl.fec'
 
-    start = StateView('account.fr.fec.start',
+    start = StateView('account.nl.fec.start',
         'account_nl.fec_start_view_form', [
             Button('Cancel', 'end', 'tryton-cancel'),
             Button('Generate', 'generate', 'tryton-ok', default=True),
             ])
     generate = StateTransition()
-    result = StateView('account.fr.fec.result',
+    result = StateView('account.nl.fec.result',
         'account_nl.fec_result_view_form', [
             Button('Close', 'end', 'tryton-close'),
             ])
@@ -123,14 +126,14 @@ class AccountFrFEC(Wizard):
     def get_format_date(self):
         pool = Pool()
         Lang = pool.get('ir.lang')
-        fr, = Lang.search([('code', '=', 'nl_NL')])
-        return lambda value: Lang.strftime(value, fr.code, '%Y%m%d')
+        nl, = Lang.search([('code', '=', 'nl_NL')])
+        return lambda value: Lang.strftime(value, nl.code, '%Y%m%d')
 
     def get_format_number(self):
         pool = Pool()
         Lang = pool.get('ir.lang')
-        fr, = Lang.search([('code', '=', 'nl_NL')])
-        return lambda value: Lang.format(fr, '%.2f', value)
+        nl, = Lang.search([('code', '=', 'nl_NL')])
+        return lambda value: Lang.format(nl, '%.2f', value)
 
     def get_start_balance(self):
         pool = Pool()
@@ -237,7 +240,7 @@ class AccountFrFEC(Wizard):
 
 class AccountFrFECStart(ModelView):
     'Generate FEC'
-    __name__ = 'account.fr.fec.start'
+    __name__ = 'account.nl.fec.start'
 
     fiscalyear = fields.Many2One('account.fiscalyear', 'Fiscal Year',
         required=True, domain=[
@@ -263,7 +266,7 @@ class AccountFrFECStart(ModelView):
 
 class AccountFrFECResult(ModelView):
     'Generate FEC'
-    __name__ = 'account.fr.fec.result'
+    __name__ = 'account.nl.fec.result'
 
     file = fields.Binary('File', readonly=True, filename='filename')
     filename = fields.Char('File Name', readonly=True)
